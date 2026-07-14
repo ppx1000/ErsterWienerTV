@@ -1,1935 +1,589 @@
-:root {
-  --green-950: #062316;
-  --green-850: #0b3322;
-  --green-700: #14633f;
-  --green-500: #1e9b63;
-  --green-300: #8ed6a7;
-  --cream: #f7f4ec;
-  --paper: #fffdf8;
-  --ink: #101816;
-  --muted: #5d6864;
-  --line: rgba(16, 24, 22, 0.12);
-  --shadow: 0 24px 70px rgba(6, 35, 22, 0.18);
-}
+const header = document.querySelector("[data-header]");
+const menuToggle = document.querySelector("[data-menu-toggle]");
+const nav = document.querySelector("[data-nav]");
+const revealItems = document.querySelectorAll(".reveal");
+const tabButtons = document.querySelectorAll("[data-tab]");
+const tabPanels = document.querySelectorAll("[data-panel]");
+const filterButtons = document.querySelectorAll("[data-filter]");
+const scheduleRows = document.querySelectorAll("[data-schedule] .schedule-row");
+const scheduleNote = document.querySelector("[data-schedule-note]");
+const scheduleEmpty = document.querySelector("[data-day-empty]");
+const contactButtons = document.querySelectorAll("[data-contact-picker] button");
+const mailLink = document.querySelector("[data-mail-link]");
+const faqItems = document.querySelectorAll("[data-faq] .faq-item");
+const ageGroupButtons = document.querySelectorAll("[data-age-group]");
+const goalButtons = document.querySelectorAll("[data-goal]");
+const experienceButtons = document.querySelectorAll("[data-experience]");
+const finderTitle = document.querySelector("[data-finder-title]");
+const finderCopy = document.querySelector("[data-finder-copy]");
+const finderExtra = document.querySelector("[data-finder-extra]");
+const finderMail = document.querySelector("[data-finder-mail]");
+const quizSteps = document.querySelectorAll("[data-quiz-step]");
+const quizTrack = document.querySelector("[data-quiz-track]");
+const quizProgressItems = document.querySelectorAll("[data-quiz-progress]");
+const quizNextButtons = document.querySelectorAll("[data-quiz-next]");
+const quizRestart = document.querySelector("[data-quiz-restart]");
+const finderResult = document.querySelector("[data-finder-result]");
+const finderPlaceholder = document.querySelector("[data-finder-placeholder]");
+const apparatusButtons = document.querySelectorAll("[data-apparatus-key]");
+const apparatusTitle = document.querySelector("[data-apparatus-title]");
+const apparatusCopy = document.querySelector("[data-apparatus-copy]");
+const motionSymbol = document.querySelector("[data-motion-symbol]");
+const apparatusImage = document.querySelector("[data-apparatus-image]");
+const apparatusDetail = document.querySelector("[data-apparatus-detail]");
+const apparatusLab = document.querySelector("[data-apparatus]");
+const timelineButtons = document.querySelectorAll("[data-year]");
+const timelineYear = document.querySelector("[data-timeline-year]");
+const timelineTitle = document.querySelector("[data-timeline-title]");
+const timelineCopy = document.querySelector("[data-timeline-copy]");
+const trainerCards = document.querySelectorAll("[data-trainer-card]");
+const trainerProfile = document.querySelector("[data-trainer-profile]");
+const profilePhoto = document.querySelector("[data-profile-photo]");
+const profileLabel = document.querySelector("[data-profile-label]");
+const profileName = document.querySelector("[data-profile-name]");
+const profileText = document.querySelector("[data-profile-text]");
+const profileFocus = document.querySelector("[data-profile-focus]");
+const profileSwitcher = document.querySelector("[data-profile-switcher]");
 
-* {
-  box-sizing: border-box;
-}
+document.body.classList.add("js-enabled");
 
-html {
-  scroll-behavior: smooth;
-}
+const setHeaderState = () => {
+  header.classList.toggle("is-scrolled", document.body.classList.contains("trainer-page") || window.scrollY > 24);
+};
 
-body {
-  margin: 0;
-  font-family: "Inter", Arial, sans-serif;
-  color: var(--ink);
-  background: var(--cream);
-}
+setHeaderState();
+window.addEventListener("scroll", setHeaderState, { passive: true });
 
-img {
-  max-width: 100%;
-  display: block;
-}
+menuToggle.addEventListener("click", () => {
+  const isOpen = nav.classList.toggle("is-open");
+  menuToggle.setAttribute("aria-expanded", String(isOpen));
+});
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button {
-  font: inherit;
-}
-
-.site-header {
-  position: fixed;
-  top: 18px;
-  left: 50%;
-  z-index: 20;
-  width: min(1120px, calc(100% - 32px));
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 12px 14px;
-  color: #fff;
-  background: rgba(6, 35, 22, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 8px;
-  backdrop-filter: blur(18px);
-  transition: background 240ms ease, box-shadow 240ms ease;
-}
-
-.site-header.is-scrolled {
-  color: var(--ink);
-  background: rgba(255, 253, 248, 0.92);
-  box-shadow: 0 16px 40px rgba(6, 35, 22, 0.14);
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 260px;
-}
-
-.brand-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 124px;
-  height: 54px;
-  padding: 7px 10px;
-  background: rgba(255, 253, 248, 0.95);
-  border-radius: 8px;
-}
-
-.brand-mark img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.brand strong,
-.brand small {
-  display: block;
-  line-height: 1.05;
-}
-
-.brand small {
-  opacity: 0.75;
-}
-
-.main-nav {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.main-nav a {
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 0.93rem;
-  font-weight: 650;
-  transition: background 180ms ease;
-}
-
-.main-nav a:hover {
-  background: rgba(30, 155, 99, 0.16);
-}
-
-.main-nav .nav-contact {
-  color: #fff;
-  background: var(--green-700);
-}
-
-.menu-toggle {
-  display: none;
-}
-
-.hero {
-  position: relative;
-  min-height: 92vh;
-  isolation: isolate;
-  overflow: hidden;
-}
-
-.hero img {
-  position: absolute;
-  inset: 0;
-  z-index: -3;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.hero-shade {
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  background:
-    linear-gradient(90deg, rgba(3, 18, 12, 0.86) 0%, rgba(3, 18, 12, 0.5) 35%, rgba(3, 18, 12, 0.12) 72%),
-    linear-gradient(0deg, rgba(6, 35, 22, 0.55) 0%, rgba(6, 35, 22, 0) 45%);
-}
-
-.hero-content {
-  width: min(1120px, calc(100% - 32px));
-  margin: 0 auto;
-  padding: 190px 0 180px;
-  color: #fff;
-}
-
-.eyebrow {
-  display: none;
-  margin: 0 0 14px;
-  color: var(--green-300);
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0;
-  text-transform: uppercase;
-}
-
-.hero h1 {
-  width: min(780px, 100%);
-  margin: 0;
-  font-size: clamp(3.5rem, 8vw, 7.6rem);
-  line-height: 0.9;
-  letter-spacing: 0;
-}
-
-.hero-copy {
-  width: min(620px, 100%);
-  margin: 28px 0 0;
-  color: rgba(255, 255, 255, 0.86);
-  font-size: clamp(1.08rem, 2vw, 1.28rem);
-  line-height: 1.6;
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 34px;
-}
-
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: 0 18px;
-  border-radius: 8px;
-  font-weight: 800;
-  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
-}
-
-.button:hover {
-  transform: translateY(-2px);
-}
-
-.button.primary {
-  color: #fff;
-  background: var(--green-500);
-  box-shadow: 0 14px 38px rgba(30, 155, 99, 0.3);
-}
-
-.button.secondary {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.24);
-}
-
-.capacity-card {
-  position: absolute;
-  right: max(24px, calc((100vw - 1120px) / 2));
-  bottom: 110px;
-  width: min(360px, calc(100% - 48px));
-  padding: 22px;
-  color: #fff;
-  background: rgba(6, 35, 22, 0.78);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 8px;
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(16px);
-}
-
-.capacity-card strong {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 1.1rem;
-}
-
-.capacity-card p {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.78);
-  line-height: 1.5;
-}
-
-.status-dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin-right: 8px;
-  background: #ffcf5a;
-  border-radius: 50%;
-  box-shadow: 0 0 0 8px rgba(255, 207, 90, 0.16);
-  animation: statusPulse 1400ms ease-in-out infinite;
-}
-
-@keyframes statusPulse {
-  0%,
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 7px rgba(255, 207, 90, 0.14);
+nav.addEventListener("click", (event) => {
+  if (event.target instanceof HTMLAnchorElement) {
+    nav.classList.remove("is-open");
+    menuToggle.setAttribute("aria-expanded", "false");
   }
-  50% {
-    transform: scale(1.32);
-    box-shadow: 0 0 0 13px rgba(255, 207, 90, 0.04);
+});
+
+tabButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const next = button.dataset.tab;
+
+    tabButtons.forEach((tab) => {
+      const isActive = tab === button;
+      tab.classList.toggle("is-active", isActive);
+      tab.setAttribute("aria-selected", String(isActive));
+    });
+
+    tabPanels.forEach((panel) => {
+      panel.classList.toggle("is-active", panel.dataset.panel === next);
+    });
+  });
+});
+
+const selectScheduleDay = (button) => {
+  const day = button.dataset.filter;
+  let visibleCount = 0;
+
+  filterButtons.forEach((item) => item.classList.toggle("is-active", item === button));
+  scheduleRows.forEach((row) => {
+    const isVisible = row.dataset.day === day;
+    row.classList.toggle("is-hidden", !isVisible);
+    row.classList.remove("is-selected");
+    if (isVisible) visibleCount += 1;
+  });
+
+  scheduleEmpty?.classList.toggle("is-hidden", visibleCount > 0);
+
+  if (scheduleNote) {
+    scheduleNote.textContent = `${button.textContent} ausgewählt: Wähle eine Stunde, um Details zu sehen.`;
   }
-}
-
-.intro-band {
-  position: relative;
-  margin-top: -76px;
-  z-index: 2;
-}
-
-.intro-grid {
-  width: min(1120px, calc(100% - 32px));
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.intro-panel,
-.offer-card,
-.trainer-card,
-.contact-card {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(255, 253, 248, 0.94);
-  box-shadow: var(--shadow);
-}
-
-.intro-panel {
-  padding: 24px;
-  transition: transform 220ms ease, box-shadow 220ms ease;
-}
-
-.intro-panel:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 28px 80px rgba(6, 35, 22, 0.22);
-}
-
-.intro-panel span {
-  color: var(--green-500);
-  font-weight: 800;
-}
-
-.intro-panel h2,
-.offer-card h3,
-.trainer-card h3 {
-  margin: 10px 0;
-}
-
-.intro-panel p,
-.offer-card p,
-.trainer-card p,
-.section-heading p,
-.story-content p,
-.contact-card p {
-  color: var(--muted);
-  line-height: 1.65;
-}
-
-.section {
-  width: min(1120px, calc(100% - 32px));
-  margin: 0 auto;
-  padding: 110px 0 0;
-}
-
-.section.overlap {
-  padding-top: 130px;
-}
-
-.section-heading {
-  width: min(680px, 100%);
-  margin-bottom: 34px;
-}
-
-.section-heading h2,
-.story-content h2,
-.contact-card h2 {
-  margin: 0;
-  font-size: clamp(2rem, 4vw, 4.2rem);
-  line-height: 1;
-  letter-spacing: 0;
-}
-
-.program-explorer {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 16px;
-  align-items: stretch;
-}
-
-.program-tabs {
-  display: grid;
-  gap: 10px;
-  align-content: start;
-}
-
-.program-tabs button,
-.schedule-tools button,
-.contact-picker button {
-  min-height: 46px;
-  padding: 0 14px;
-  color: var(--ink);
-  cursor: pointer;
-  background: rgba(255, 253, 248, 0.78);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  font-weight: 800;
-  text-align: left;
-  transition: transform 180ms ease, background 180ms ease, color 180ms ease, border-color 180ms ease;
-}
-
-.program-tabs button:hover,
-.schedule-tools button:hover,
-.contact-picker button:hover {
-  transform: translateY(-2px);
-  border-color: rgba(30, 155, 99, 0.38);
-}
-
-.program-tabs button.is-active,
-.schedule-tools button.is-active,
-.contact-picker button.is-active {
-  color: #fff;
-  background: var(--green-700);
-  border-color: var(--green-700);
-}
-
-.program-stage {
-  position: relative;
-  min-height: 380px;
-  padding: 28px;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(255, 253, 248, 0.96), rgba(142, 214, 167, 0.18)),
-    var(--paper);
-  box-shadow: var(--shadow);
-}
-
-.program-stage::after {
-  content: "";
-  position: absolute;
-  right: -80px;
-  bottom: -90px;
-  width: 230px;
-  height: 230px;
-  background: radial-gradient(circle, rgba(30, 155, 99, 0.18), rgba(30, 155, 99, 0));
-}
-
-.program-panel {
-  position: relative;
-  z-index: 1;
-  display: none;
-  grid-template-columns: 64px 1fr;
-  gap: 24px;
-  opacity: 0;
-  transform: translateX(18px);
-}
-
-.program-panel.is-active {
-  display: grid;
-  animation: panelIn 320ms ease forwards;
-}
-
-.program-panel h3 {
-  margin: 12px 0;
-  font-size: clamp(1.8rem, 4vw, 3.6rem);
-  line-height: 1;
-}
-
-.program-panel p:not(.pill),
-.program-panel li {
-  color: var(--muted);
-  line-height: 1.65;
-}
-
-.program-panel ul {
-  display: grid;
-  gap: 10px;
-  margin: 20px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.program-panel li {
-  position: relative;
-  padding-left: 24px;
-}
-
-.program-panel li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.72em;
-  width: 9px;
-  height: 9px;
-  background: var(--green-500);
-  border-radius: 50%;
-}
-
-@keyframes panelIn {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.icon {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  color: #fff;
-  background: var(--green-700);
-  border-radius: 8px;
-  font-weight: 800;
-}
-
-.pill {
-  display: inline-flex;
-  margin: 0;
-  padding: 7px 10px;
-  color: var(--green-850);
-  background: rgba(142, 214, 167, 0.28);
-  border: 1px solid rgba(20, 99, 63, 0.18);
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 800;
-}
-
-.schedule-section {
-  width: 100%;
-  padding-inline: max(16px, calc((100vw - 1120px) / 2));
-  padding-bottom: 100px;
-  background:
-    linear-gradient(180deg, rgba(247, 244, 236, 0) 0%, var(--green-950) 18%),
-    var(--green-950);
-  color: #fff;
-}
-
-.finder-section {
-  padding-bottom: 100px;
-}
-
-.finder,
-.apparatus-lab,
-.timeline {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--paper);
-  box-shadow: var(--shadow);
-}
-
-.finder {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
-  gap: 0;
-  overflow: hidden;
-}
-
-.finder-controls {
-  position: relative;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  gap: 18px;
-  min-height: 430px;
-  padding: 30px;
-  background: linear-gradient(145deg, rgba(142, 214, 167, 0.22), rgba(255, 253, 248, 0.78));
-  overflow: hidden;
-}
-
-.quiz-progress {
-  position: relative;
-  z-index: 4;
-  display: inline-flex;
-  justify-self: center;
-  gap: 7px;
-  align-items: center;
-  width: fit-content;
-  max-width: 100%;
-  min-height: 48px;
-  padding: 6px 8px;
-  background: rgba(255, 253, 248, 0.72);
-  border: 1px solid rgba(20, 99, 63, 0.14);
-  border-radius: 999px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72), 0 14px 32px rgba(6, 35, 22, 0.08);
-}
-
-.quiz-progress span {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 36px;
-  padding: 0 14px 0 8px;
-  color: rgba(16, 24, 22, 0.58);
-  background: transparent;
-  border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 900;
-  text-align: center;
-  transition: background 180ms ease, color 180ms ease;
-}
-
-.quiz-progress b {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 28px;
-  height: 28px;
-  color: var(--green-900);
-  background: #fffdf8;
-  border: 1px solid rgba(20, 99, 63, 0.12);
-  border-radius: 50%;
-  box-shadow: 0 8px 18px rgba(6, 35, 22, 0.08);
-  font-size: 0.76rem;
-}
-
-.quiz-progress small {
-  font-size: inherit;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.quiz-progress span.is-active {
-  color: var(--green-900);
-  background: rgba(142, 214, 167, 0.2);
-}
-
-.quiz-progress span.is-active b {
-  color: #fff;
-  background: var(--green-700);
-  border-color: rgba(142, 214, 167, 0.8);
-}
-
-.quiz-progress span.is-done {
-  color: var(--green-900);
-  background: rgba(142, 214, 167, 0.1);
-}
-
-.quiz-progress span.is-done b {
-  color: #fff;
-  background: var(--green-500);
-  border-color: rgba(142, 214, 167, 0.72);
-}
-
-.finder-controls label,
-.quiz-block {
-  display: grid;
-  align-content: center;
-  gap: 12px;
-  font-weight: 800;
-}
-
-.quiz-block {
-  grid-area: 2 / 1;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(42px);
-  transition: opacity 260ms ease, transform 260ms ease;
-}
-
-.quiz-block.is-active {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0);
-}
-
-.quiz-block.is-complete {
-  transform: translateX(-42px);
-}
-
-.quiz-block h3 {
-  margin: 0;
-  font-size: 1rem;
-}
-
-.finder-controls input[type="range"] {
-  width: 100%;
-  accent-color: var(--green-700);
-}
-
-.finder-controls output {
-  display: inline-flex;
-  width: fit-content;
-  padding: 9px 12px;
-  color: #fff;
-  background: var(--green-700);
-  border-radius: 8px;
-  font-weight: 800;
-}
-
-.goal-buttons,
-.quiz-options {
-  display: grid;
-  gap: 10px;
-}
-
-.goal-buttons button,
-.quiz-options button,
-.quiz-next,
-.timeline-controls button {
-  min-height: 44px;
-  padding: 0 14px;
-  color: var(--ink);
-  cursor: pointer;
-  background: rgba(255, 253, 248, 0.82);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  font-weight: 800;
-  text-align: left;
-  transition: transform 180ms ease, background 180ms ease, color 180ms ease;
-}
-
-.goal-buttons button:hover,
-.quiz-options button:hover,
-.quiz-next:hover,
-.timeline-controls button:hover {
-  transform: translateY(-2px);
-}
-
-.goal-buttons button.is-active,
-.quiz-options button.is-active,
-.timeline-controls button.is-active {
-  color: #fff;
-  background: var(--green-700);
-}
-
-.quiz-next {
-  justify-self: start;
-  min-width: 132px;
-  color: #fff;
-  background: var(--green-700);
-  border-color: rgba(20, 99, 63, 0.18);
-}
-
-.quiz-next:disabled {
-  color: rgba(16, 24, 22, 0.42);
-  cursor: not-allowed;
-  background: rgba(255, 253, 248, 0.54);
-  transform: none;
-}
-
-.finder-result {
-  position: relative;
-  display: grid;
-  align-content: center;
-  gap: 14px;
-  min-height: 360px;
-  padding: 38px;
-  overflow: hidden;
-}
-
-.finder-result > :not(.finder-placeholder) {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 220ms ease;
-}
-
-.finder-result.is-complete > :not(.finder-placeholder) {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.finder-placeholder {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  gap: 8px;
-}
-
-.finder-placeholder strong {
-  font-size: clamp(1.7rem, 3vw, 2.8rem);
-  line-height: 1;
-}
-
-.finder-placeholder span {
-  color: var(--muted);
-  font-size: 1.05rem;
-  line-height: 1.5;
-}
-
-.finder-result.is-complete .finder-placeholder {
-  display: none;
-}
-
-.finder-result::after {
-  content: "";
-  position: absolute;
-  right: -64px;
-  bottom: -74px;
-  width: 210px;
-  height: 210px;
-  background: conic-gradient(from 90deg, rgba(30, 155, 99, 0.28), rgba(142, 214, 167, 0), rgba(30, 155, 99, 0.18));
-  border-radius: 50%;
-  animation: slowSpin 12s linear infinite;
-}
-
-.finder-result h3,
-.apparatus-detail h3,
-.timeline-panel h3 {
-  position: relative;
-  z-index: 1;
-  margin: 0;
-  font-size: clamp(2rem, 4vw, 4rem);
-  line-height: 1;
-}
-
-.finder-result h3 {
-  max-width: 100%;
-  font-size: clamp(2rem, 3.2vw, 3.25rem);
-  line-height: 1.05;
-  hyphens: auto;
-  overflow-wrap: anywhere;
-}
-
-.finder-result p:not(.eyebrow),
-.apparatus-detail p:not(.eyebrow),
-.timeline-panel p {
-  position: relative;
-  z-index: 1;
-  color: var(--muted);
-  line-height: 1.65;
-}
-
-.finder-extra {
-  padding: 14px 16px;
-  border: 1px solid rgba(30, 155, 99, 0.18);
-  border-radius: 8px;
-  background: rgba(142, 214, 167, 0.16);
-  font-weight: 750;
-}
-
-.finder-result .button {
-  position: relative;
-  z-index: 1;
-  width: fit-content;
-}
-
-.button.secondary.quiz-restart {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 3;
-  color: var(--green-900);
-  cursor: pointer;
-  background: rgba(142, 214, 167, 0.18);
-  border: 1px solid rgba(20, 99, 63, 0.24);
-  box-shadow: none;
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-}
-
-.button.secondary.quiz-restart:hover {
-  color: #fff;
-  background: var(--green-700);
-  transform: translate(-50%, calc(-50% - 2px));
-}
-
-.finder-controls.is-complete .quiz-restart {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.finder-result .button[hidden] {
-  display: none !important;
-}
-
-@keyframes slowSpin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.schedule-section .section-heading {
-  padding-top: 70px;
-}
-
-.schedule-section .section-heading p {
-  color: rgba(255, 255, 255, 0.72);
-}
-
-.schedule {
-  display: grid;
-  gap: 16px;
-  padding: 28px;
-  overflow: hidden;
-  border: 1px solid rgba(142, 214, 167, 0.2);
-  border-radius: 8px;
-  background: rgba(247, 244, 236, 0.08);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
-.schedule-tools {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(92px, 1fr));
-  gap: 14px;
-  margin: -10px 0 26px;
-}
-
-.schedule-tools button {
-  min-height: 104px;
-  color: rgba(255, 255, 255, 0.84);
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(142, 214, 167, 0.22);
-  border-radius: 8px;
-  font-size: clamp(1.25rem, 3vw, 2rem);
-  font-weight: 900;
-}
-
-.schedule-tools button.is-active {
-  color: #fff;
-  background: var(--green-700);
-  border-color: var(--green-300);
-  box-shadow: 0 20px 54px rgba(0, 0, 0, 0.22);
-}
-
-.schedule-row {
-  display: grid;
-  grid-template-columns: minmax(160px, 0.8fr) minmax(220px, 1.5fr) auto;
-  gap: 24px;
-  align-items: center;
-  width: 100%;
-  padding: 24px 34px;
-  color: var(--ink);
-  text-align: left;
-  cursor: pointer;
-  background: rgba(255, 253, 248, 0.96);
-  border: 0;
-  border-left: 10px solid var(--green-300);
-  border-radius: 8px;
-  transition: background 180ms ease, transform 180ms ease, opacity 180ms ease;
-}
-
-.schedule-row:hover,
-.schedule-row.is-selected {
-  transform: translateX(6px);
-  background: #fff;
-  box-shadow: 0 20px 58px rgba(0, 0, 0, 0.18);
-}
-
-.schedule-row.is-hidden {
-  display: none;
-}
-
-.schedule-time {
-  color: var(--green-700);
-  font-size: clamp(1.25rem, 3vw, 2rem);
-  font-weight: 900;
-}
-
-.schedule-name {
-  color: var(--ink);
-  font-size: clamp(1.05rem, 2.3vw, 1.55rem);
-  font-weight: 750;
-}
-
-.schedule-place {
-  padding: 10px 14px;
-  color: var(--green-950);
-  background: rgba(6, 35, 22, 0.08);
-  border-radius: 999px;
-  font-weight: 900;
-  white-space: nowrap;
-}
-
-.schedule-empty {
-  padding: 34px;
-  color: rgba(255, 255, 255, 0.78);
-  text-align: center;
-  border: 1px dashed rgba(142, 214, 167, 0.34);
-  border-radius: 8px;
-}
-
-.schedule-empty.is-hidden {
-  display: none;
-}
-
-.schedule-note {
-  min-height: 58px;
-  margin: 18px 0 0;
-  padding: 18px 20px;
-  color: rgba(255, 255, 255, 0.84);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 8px;
-}
-
-.trainers {
-  padding-bottom: 80px;
-}
-
-.apparatus-section {
-  padding-bottom: 40px;
-}
-
-.apparatus-lab {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 760px;
-  overflow: hidden;
-}
-
-.apparatus-board {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(3, minmax(0, 1fr));
-  background:
-    linear-gradient(135deg, rgba(6, 35, 22, 0.94), rgba(20, 99, 63, 0.9)),
-    var(--green-850);
-}
-
-.apparatus-item {
-  position: relative;
-  display: grid;
-  place-items: center;
-  min-height: 0;
-  color: #fff;
-  cursor: pointer;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  overflow: hidden;
-  font-size: 1.1rem;
-  font-weight: 800;
-}
-
-.apparatus-item::before {
-  content: "";
-  position: absolute;
-  inset: 24px;
-  border: 2px solid rgba(142, 214, 167, 0.4);
-  border-radius: 999px;
-  transform: scale(0.76);
-  opacity: 0.4;
-  transition: transform 220ms ease, opacity 220ms ease;
-}
-
-.apparatus-item:hover::before,
-.apparatus-item.is-active::before {
-  transform: scale(1);
-  opacity: 1;
-}
-
-.apparatus-item.is-active {
-  background: rgba(30, 155, 99, 0.34);
-}
-
-.apparatus-detail {
-  display: grid;
-  align-content: center;
-  gap: 14px;
-  padding: 40px;
-  scroll-margin-top: 110px;
-}
-
-.apparatus-image {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  box-shadow: 0 18px 46px rgba(6, 35, 22, 0.12);
-}
-
-.motion-symbol {
-  display: grid;
-  place-items: center;
-  width: 86px;
-  height: 86px;
-  color: #fff;
-  background: var(--green-700);
-  border-radius: 8px;
-  font-size: 2.5rem;
-  font-weight: 800;
-  box-shadow: 0 18px 46px rgba(20, 99, 63, 0.24);
-  animation: motionBounce 1600ms ease-in-out infinite;
-}
-
-@keyframes motionBounce {
-  0%,
-  100% {
-    transform: translateY(0) rotate(-2deg);
-  }
-  50% {
-    transform: translateY(-12px) rotate(3deg);
-  }
-}
-
-.trainer-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 16px;
-}
-
-.trainer-card {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
-  align-items: start;
-  padding: 18px;
-  min-height: 250px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 220ms ease, box-shadow 220ms ease;
-}
-
-.trainer-card:hover,
-.trainer-card:focus-visible,
-.trainer-card.is-active {
-  transform: translateY(-6px);
-  box-shadow: 0 28px 80px rgba(6, 35, 22, 0.2);
-}
-
-.trainer-card.is-active {
-  border-color: rgba(30, 155, 99, 0.48);
-  background: linear-gradient(135deg, rgba(255, 253, 248, 0.96), rgba(142, 214, 167, 0.2));
-}
-
-.trainer-card:focus-visible {
-  outline: 3px solid rgba(30, 155, 99, 0.42);
-  outline-offset: 3px;
-}
-
-.trainer-card-link {
-  display: inline-flex;
-  align-items: center;
-  margin-top: 14px;
-  color: var(--green-700);
-  font-size: 0.88rem;
-  font-weight: 850;
-}
-
-.trainer-card-link::after {
-  content: ">";
-  margin-left: 8px;
-  transition: transform 180ms ease;
-}
-
-.trainer-card:hover .trainer-card-link::after,
-.trainer-card:focus-visible .trainer-card-link::after {
-  transform: translateX(4px);
-}
-
-.trainer-photo {
-  width: 100%;
-  height: 118px;
-  border-radius: 8px;
-  background:
-    linear-gradient(145deg, rgba(30, 155, 99, 0.72), rgba(6, 35, 22, 0.86)),
-    linear-gradient(45deg, #d9c7a3, #fffdf8);
-}
-
-.trainer-badge {
-  display: inline-flex;
-  margin: 4px 0 10px;
-  padding: 6px 8px;
-  color: #fff;
-  background: var(--green-700);
-  border-radius: 8px;
-  font-size: 0.78rem;
-  font-weight: 800;
-}
-
-.trainer-card-summary {
-  margin: 0;
-}
-
-.trainer-detail {
-  display: grid;
-  grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.15fr);
-  gap: 28px;
-  align-items: stretch;
-  margin-top: 18px;
-  padding: 24px;
-  border: 1px solid rgba(30, 155, 99, 0.22);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(255, 253, 248, 0.98), rgba(142, 214, 167, 0.2)),
-    var(--paper);
-  box-shadow: 0 28px 80px rgba(6, 35, 22, 0.16);
-}
-
-.trainer-detail-photo {
-  min-height: 360px;
-  border-radius: 8px;
-  background-size: cover;
-}
-
-.trainer-detail-copy {
-  display: grid;
-  align-content: center;
-  gap: 14px;
-  min-width: 0;
-  padding: 18px 6px;
-}
-
-.trainer-detail-copy h3 {
-  margin: 0;
-  font-size: clamp(2rem, 4vw, 3.6rem);
-  line-height: 0.95;
-}
-
-.trainer-detail-copy p:not(.eyebrow) {
-  max-width: 620px;
-  margin: 0;
-  color: var(--muted);
-  font-size: 1.04rem;
-  line-height: 1.75;
-}
-
-.trainer-focus-list,
-.trainer-switcher,
-.trainer-detail-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.trainer-focus-list span,
-.trainer-switcher button {
-  min-height: 38px;
-  padding: 9px 11px;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 800;
-}
-
-.trainer-focus-list span {
-  color: var(--green-850);
-  background: rgba(30, 155, 99, 0.12);
-}
-
-.trainer-detail-actions {
-  margin-top: 8px;
-}
-
-.trainer-detail-actions button,
-.trainer-switcher button {
-  border: 1px solid rgba(20, 99, 63, 0.18);
-  color: var(--green-850);
-  background: rgba(255, 253, 248, 0.84);
-  cursor: pointer;
-  transition: background 180ms ease, transform 180ms ease, border-color 180ms ease;
-}
-
-.trainer-detail-actions button {
-  min-height: 44px;
-  padding: 10px 15px;
-  border-radius: 8px;
-  font-weight: 850;
-}
-
-.trainer-detail-actions button:hover,
-.trainer-switcher button:hover,
-.trainer-switcher button.is-active {
-  border-color: rgba(30, 155, 99, 0.5);
-  background: rgba(142, 214, 167, 0.22);
-  transform: translateY(-2px);
-}
-
-.trainer-switcher {
-  padding-top: 4px;
-}
-
-.trainer-a {
-  background:
-    linear-gradient(145deg, rgba(30, 155, 99, 0.72), rgba(6, 35, 22, 0.86)),
-    linear-gradient(45deg, #d9c7a3, #fffdf8);
-}
-
-.trainer-page {
-  background:
-    radial-gradient(circle at 20% 0%, rgba(142, 214, 167, 0.28), transparent 32%),
-    var(--cream);
-}
-
-.trainer-profile-main {
-  width: min(1120px, calc(100% - 32px));
-  margin: 0 auto;
-  padding: 132px 0 92px;
-}
-
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  margin-bottom: 24px;
-  color: var(--green-850);
-  font-weight: 850;
-}
-
-.back-link::before {
-  content: "<";
-  margin-right: 8px;
-}
-
-.trainer-profile {
-  display: grid;
-  grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
-  gap: 22px;
-  align-items: stretch;
-}
-
-.trainer-profile-photo {
-  position: relative;
-  display: grid;
-  place-items: center;
-  min-height: 620px;
-  overflow: hidden;
-  isolation: isolate;
-  color: #fff;
-  border-radius: 8px;
-  background:
-    linear-gradient(145deg, rgba(30, 155, 99, 0.72), rgba(6, 35, 22, 0.86)),
-    linear-gradient(45deg, #d9c7a3, #fffdf8);
-  background-size: cover;
-  box-shadow: 0 28px 80px rgba(6, 35, 22, 0.18);
-}
-
-.trainer-profile-photo::before {
-  content: "";
-  position: absolute;
-  inset: 42px;
-  z-index: -1;
-  border: 3px solid rgba(255, 255, 255, 0.24);
-  border-radius: 999px 999px 52px 52px;
-  background:
-    radial-gradient(circle at 50% 24%, rgba(255, 255, 255, 0.34) 0 10%, transparent 11%),
-    radial-gradient(ellipse at 50% 76%, rgba(255, 255, 255, 0.2) 0 34%, transparent 35%);
-  box-shadow: inset 0 0 90px rgba(255, 255, 255, 0.08);
-}
-
-.trainer-profile-photo::after {
-  content: attr(data-initial);
-  display: grid;
-  place-items: center;
-  width: clamp(120px, 18vw, 190px);
-  height: clamp(120px, 18vw, 190px);
-  border: 2px solid rgba(255, 255, 255, 0.28);
-  border-radius: 50%;
-  background: rgba(6, 35, 22, 0.32);
-  box-shadow: 0 28px 90px rgba(6, 35, 22, 0.32);
-  font-size: clamp(4.4rem, 11vw, 8rem);
-  font-weight: 900;
-  line-height: 1;
-}
-
-.trainer-profile-card {
-  display: grid;
-  align-content: center;
-  gap: 18px;
-  padding: clamp(30px, 5vw, 58px);
-  border: 1px solid rgba(30, 155, 99, 0.2);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(255, 253, 248, 0.98), rgba(142, 214, 167, 0.18)),
-    var(--paper);
-  box-shadow: var(--shadow);
-}
-
-.trainer-profile-card h1 {
-  max-width: 100%;
-  margin: 0;
-  overflow-wrap: anywhere;
-  font-size: clamp(2.8rem, 6vw, 5.2rem);
-  line-height: 0.95;
-}
-
-.trainer-profile-text {
-  max-width: 640px;
-  margin: 0;
-  color: var(--muted);
-  font-size: 1.14rem;
-  line-height: 1.78;
-}
-
-.trainer-more {
-  display: grid;
-  grid-template-columns: minmax(220px, 0.45fr) minmax(0, 1fr);
-  gap: 20px;
-  align-items: center;
-  margin-top: 20px;
-  padding: 26px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(255, 253, 248, 0.82);
-  box-shadow: 0 18px 54px rgba(6, 35, 22, 0.1);
-}
-
-.trainer-more h2 {
-  margin: 8px 0 0;
-}
-
-.trainer-switcher-links a {
-  min-height: 38px;
-  padding: 9px 11px;
-  border: 1px solid rgba(20, 99, 63, 0.18);
-  border-radius: 8px;
-  color: var(--green-850);
-  background: rgba(255, 253, 248, 0.84);
-  font-size: 0.85rem;
-  font-weight: 800;
-  transition: background 180ms ease, transform 180ms ease, border-color 180ms ease;
-}
-
-.trainer-switcher-links a:hover,
-.trainer-switcher-links a.is-active {
-  border-color: rgba(30, 155, 99, 0.5);
-  background: rgba(142, 214, 167, 0.22);
-  transform: translateY(-2px);
-}
-
-.trainer-b {
-  background:
-    linear-gradient(145deg, rgba(20, 99, 63, 0.76), rgba(16, 24, 22, 0.82)),
-    linear-gradient(45deg, #9bb9c6, #fffdf8);
-}
-
-.trainer-c {
-  background:
-    linear-gradient(145deg, rgba(30, 155, 99, 0.68), rgba(66, 55, 43, 0.82)),
-    linear-gradient(45deg, #d7c2b3, #fffdf8);
-}
-
-.trainer-d {
-  background:
-    linear-gradient(145deg, rgba(142, 214, 167, 0.7), rgba(6, 35, 22, 0.86)),
-    linear-gradient(45deg, #efd7a6, #fffdf8);
-}
-
-.trainer-e {
-  background:
-    linear-gradient(145deg, rgba(30, 155, 99, 0.66), rgba(38, 67, 56, 0.86)),
-    linear-gradient(45deg, #c9d8c3, #fffdf8);
-}
-
-.trainer-f {
-  background:
-    linear-gradient(145deg, rgba(93, 178, 127, 0.72), rgba(16, 24, 22, 0.84)),
-    linear-gradient(45deg, #ead0c1, #fffdf8);
-}
-
-.trainer-g {
-  background:
-    linear-gradient(145deg, rgba(20, 99, 63, 0.74), rgba(96, 82, 54, 0.82)),
-    linear-gradient(45deg, #d6ddba, #fffdf8);
-}
-
-.trainer-h {
-  background:
-    linear-gradient(145deg, rgba(30, 155, 99, 0.68), rgba(10, 52, 40, 0.86)),
-    linear-gradient(45deg, #bdd8d0, #fffdf8);
-}
-
-.story {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
-  gap: 18px;
-  width: min(1120px, calc(100% - 32px));
-  margin: 0 auto 110px;
-  align-items: stretch;
-}
-
-.story-content {
-  padding: 54px;
-  color: #fff;
-  background: var(--green-850);
-  border-radius: 8px;
-}
-
-.story-content p {
-  color: rgba(255, 255, 255, 0.78);
-}
-
-.story-stack {
-  display: grid;
-  gap: 12px;
-  align-content: center;
-}
-
-.story-stack span {
-  display: block;
-  padding: 20px;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  box-shadow: 0 16px 40px rgba(6, 35, 22, 0.09);
-  font-weight: 800;
-  transition: transform 220ms ease, background 220ms ease;
-}
-
-.story-stack span:hover {
-  transform: translateX(8px);
-  background: rgba(142, 214, 167, 0.28);
-}
-
-.story-stack span:nth-child(even) {
-  transform: translateX(-24px);
-}
-
-.story-stack span:nth-child(even):hover {
-  transform: translateX(-12px);
-}
-
-.timeline-section {
-  padding-top: 0;
-  padding-bottom: 92px;
-}
-
-.timeline {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  overflow: hidden;
-}
-
-.timeline-controls {
-  display: grid;
-  gap: 10px;
-  align-content: center;
-  padding: 24px;
-  background: rgba(142, 214, 167, 0.18);
-}
-
-.timeline-panel {
-  min-height: 300px;
-  padding: 42px;
-  background:
-    linear-gradient(135deg, rgba(255, 253, 248, 0.96), rgba(247, 244, 236, 0.82)),
-    var(--paper);
-}
-
-.timeline-panel span {
-  display: inline-flex;
-  margin-bottom: 16px;
-  padding: 8px 10px;
-  color: #fff;
-  background: var(--green-700);
-  border-radius: 8px;
-  font-weight: 800;
-}
-
-.contact-section {
-  padding: 0 16px 96px;
-}
-
-.faq-section {
-  padding-top: 0;
-  padding-bottom: 92px;
-}
-
-.faq-list {
-  display: grid;
-  gap: 12px;
-}
-
-.faq-item {
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--paper);
-  box-shadow: 0 14px 44px rgba(6, 35, 22, 0.08);
-}
-
-.faq-item button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  width: 100%;
-  padding: 22px;
-  color: var(--ink);
-  text-align: left;
-  cursor: pointer;
-  background: transparent;
-  border: 0;
-  font-weight: 800;
-}
-
-.faq-item strong {
-  display: grid;
-  flex: 0 0 auto;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  color: #fff;
-  background: var(--green-700);
-  border-radius: 8px;
-  transition: transform 180ms ease;
-}
-
-.faq-item p {
-  max-height: 0;
-  margin: 0;
-  padding: 0 22px;
-  color: var(--muted);
-  line-height: 1.65;
-  opacity: 0;
-  transition: max-height 260ms ease, padding 260ms ease, opacity 260ms ease;
-}
-
-.faq-item.is-open p {
-  max-height: 220px;
-  padding: 0 22px 22px;
-  opacity: 1;
-}
-
-.faq-item.is-open strong {
-  transform: rotate(45deg);
-}
-
-.contact-card {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 28px;
-  align-items: center;
-  width: min(1120px, 100%);
-  margin: 0 auto;
-  padding: 38px;
-  background:
-    linear-gradient(135deg, rgba(255, 253, 248, 0.94), rgba(142, 214, 167, 0.18)),
-    var(--paper);
-}
-
-.mail-button {
-  min-width: 238px;
-}
-
-.contact-picker {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 20px;
-}
-
-.contact-picker button {
-  min-height: 40px;
-  text-align: center;
-}
-
-.site-footer {
-  padding: 48px max(18px, calc((100vw - 1120px) / 2)) 28px;
-  color: rgba(255, 255, 255, 0.78);
-  background:
-    radial-gradient(circle at 18% 0%, rgba(142, 214, 167, 0.18), transparent 34%),
-    linear-gradient(135deg, var(--green-950), var(--green-850));
-}
-
-.footer-inner {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 42px;
-  padding-bottom: 34px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
-}
-
-.footer-column h2 {
-  margin: 0 0 18px;
-  color: var(--green-300);
-  font-size: 1rem;
-  letter-spacing: 0;
-}
-
-.footer-column p {
-  margin: 0;
-  max-width: 440px;
-  color: rgba(255, 255, 255, 0.82);
-  font-size: 1rem;
-  line-height: 1.55;
-}
-
-.site-footer strong,
-.site-footer a {
-  color: #fff;
-}
-
-.site-footer a {
-  text-decoration: underline;
-  text-decoration-color: rgba(142, 214, 167, 0.55);
-  text-underline-offset: 4px;
-}
-
-.footer-bottom {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px 18px;
-  padding-top: 22px;
-  color: rgba(255, 255, 255, 0.58);
-  font-size: 0.92rem;
-  text-align: center;
-}
-
-body.js-enabled .reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 700ms ease, transform 700ms ease;
-}
-
-body.js-enabled .reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .status-dot,
-  .finder-result::after,
-  .motion-symbol {
-    animation: none;
-  }
-}
-
-@media (max-width: 920px) {
-  .menu-toggle {
-    display: grid;
-    gap: 6px;
-    width: 44px;
-    height: 44px;
-    place-content: center;
-    color: inherit;
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 8px;
+};
+
+filterButtons.forEach((button) => {
+  button.addEventListener("click", () => selectScheduleDay(button));
+});
+
+if (filterButtons.length > 0) {
+  selectScheduleDay(document.querySelector("[data-filter].is-active") ?? filterButtons[0]);
+}
+
+scheduleRows.forEach((row) => {
+  row.addEventListener("click", () => {
+    scheduleRows.forEach((item) => item.classList.remove("is-selected"));
+    row.classList.add("is-selected");
+    if (scheduleNote) {
+      scheduleNote.textContent = row.dataset.note ?? "Details zu dieser Stunde.";
+    }
+  });
+});
+
+const updateMailLink = (group) => {
+  if (!mailLink) return;
+
+  const isWaitlistGroup = ["Kleinkinderturnstunde", "Kinderturnen", "Jugendturnen"].includes(group);
+  const subject = `${isWaitlistGroup ? "Wartelisten-Anfrage" : "Anfrage"} ${group}`;
+  const body = [
+    "Liebes EWTV-Team,",
+    "",
+    isWaitlistGroup
+      ? "ich möchte mich bzw. mein Kind gerne auf die Warteliste setzen lassen."
+      : "ich interessiere mich für das Erwachsenentraining und möchte gerne weitere Informationen erhalten.",
+    "",
+    "Name:",
+    "Alter:",
+    `Gewünschte Gruppe: ${group}`,
+    "Mögliche Trainingstage:",
+    "Telefonnummer:",
+    "",
+    "Vielen Dank!"
+  ].join("\r\n");
+
+  mailLink.href = `mailto:office@ewtv.at?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+};
+
+contactButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    contactButtons.forEach((item) => item.classList.toggle("is-active", item === button));
+    updateMailLink(button.dataset.subject ?? "Turnstunde");
+  });
+});
+
+faqItems.forEach((item) => {
+  const button = item.querySelector("button");
+
+  button?.addEventListener("click", () => {
+    const shouldOpen = !item.classList.contains("is-open");
+
+    faqItems.forEach((faq) => {
+      faq.classList.remove("is-open");
+      faq.querySelector("button")?.setAttribute("aria-expanded", "false");
+    });
+
+    item.classList.toggle("is-open", shouldOpen);
+    button.setAttribute("aria-expanded", String(shouldOpen));
+  });
+});
+
+const finderCopyByGroup = {
+  "Kleinkinderturnstunde": "Für 4-6 Jahre: spielerischer Einstieg, Koordination und erste Turngrundlagen.",
+  Kinderturnen: "Für 6-9 Jahre: klare Grundlagen, Bewegungssicherheit und Freude am Turnen.",
+  Jugendturnen: "Für 10-14 Jahre: mehr Technik, Kraft und selbstständiges Training in der Gruppe.",
+  Erwachsene: "Ab 15 Jahren: Kraft, Mobilität und turnerische Basics ohne Leistungsdruck. Diese Gruppe ist aktuell nicht voll."
+};
+
+const getFinderGroup = () => {
+  const ageGroup = document.querySelector("[data-age-group].is-active")?.dataset.ageGroup ?? "4-6";
+
+  if (ageGroup === "4-6") return "Kleinkinderturnstunde";
+  if (ageGroup === "6-9") return "Kinderturnen";
+  if (ageGroup === "10-14") return "Jugendturnen";
+  return "Erwachsene";
+};
+
+let activeQuizStep = 0;
+let quizIsComplete = false;
+
+const quizPromptByStep = [
+  "Wähle zuerst das Alter aus.",
+  "Wähle aus, was beim Training im Vordergrund stehen soll.",
+  "Sag noch kurz, wie viel Turnerfahrung schon vorhanden ist."
+];
+
+const getQuizButtonsForStep = (stepIndex) => {
+  if (stepIndex === 0) return ageGroupButtons;
+  if (stepIndex === 1) return goalButtons;
+  return experienceButtons;
+};
+
+const updateQuizNextButton = (stepIndex) => {
+  const step = document.querySelector(`[data-quiz-step="${stepIndex}"]`);
+  const nextButton = step?.querySelector("[data-quiz-next]");
+  if (!nextButton) return;
+
+  const hasAnswer = Array.from(getQuizButtonsForStep(stepIndex)).some((button) => button.classList.contains("is-active"));
+  nextButton.disabled = !hasAnswer;
+};
+
+const setQuizStep = (nextStep) => {
+  activeQuizStep = Math.min(Math.max(nextStep, 0), quizSteps.length - 1);
+
+  quizSteps.forEach((step) => {
+    const stepIndex = Number(step.dataset.quizStep ?? 0);
+    step.classList.toggle("is-active", stepIndex === activeQuizStep && !quizIsComplete);
+    step.classList.toggle("is-complete", stepIndex < activeQuizStep || quizIsComplete);
+  });
+
+  quizProgressItems.forEach((item) => {
+    const progressIndex = Number(item.dataset.quizProgress ?? 0);
+    const activeProgressIndex = quizIsComplete ? quizSteps.length : activeQuizStep;
+    item.classList.toggle("is-active", progressIndex === activeProgressIndex);
+    item.classList.toggle("is-done", progressIndex < activeProgressIndex);
+  });
+
+  if (finderPlaceholder && !quizIsComplete) {
+    finderPlaceholder.querySelector("strong").textContent = `Frage ${activeQuizStep + 1} von ${quizSteps.length}`;
+    finderPlaceholder.querySelector("span").textContent = quizPromptByStep[activeQuizStep] ?? "";
   }
 
-  .menu-toggle span {
-    display: block;
-    width: 20px;
-    height: 2px;
-    background: currentColor;
-  }
+  finderResult?.classList.toggle("is-complete", quizIsComplete);
+  quizTrack?.classList.toggle("is-complete", quizIsComplete);
+  updateQuizNextButton(activeQuizStep);
+};
 
-  .main-nav {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    right: 0;
-    display: none;
-    padding: 8px;
-    background: rgba(255, 253, 248, 0.96);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    box-shadow: var(--shadow);
-  }
+const completeQuiz = () => {
+  quizIsComplete = true;
+  updateFinder();
+  setQuizStep(activeQuizStep);
+};
 
-  .main-nav.is-open {
-    display: grid;
-  }
+const answerQuizStep = (buttons, selectedButton) => {
+  buttons.forEach((item) => item.classList.toggle("is-active", item === selectedButton));
+  updateFinder();
+  updateQuizNextButton(activeQuizStep);
+};
 
-  .main-nav a {
-    color: var(--ink);
-  }
+const resetQuiz = () => {
+  quizIsComplete = false;
+  [...ageGroupButtons, ...goalButtons, ...experienceButtons].forEach((button) => {
+    button.classList.remove("is-active");
+  });
+  quizNextButtons.forEach((button) => {
+    button.disabled = true;
+  });
+  updateFinder();
+  setQuizStep(0);
+};
 
-  .main-nav .nav-contact {
-    color: #fff;
-  }
+const updateFinder = () => {
+  if (!finderTitle || !finderCopy || !finderMail) return;
 
-  .hero-content {
-    padding: 150px 0 34px;
-  }
+  const group = getFinderGroup();
+  const activeGoalButton = document.querySelector("[data-goal].is-active");
+  const activeExperienceButton = document.querySelector("[data-experience].is-active");
+  const activeGoal = activeGoalButton?.textContent?.trim() ?? "Spielerisch bewegen und Turngrundlagen lernen";
+  const activeExperience = activeExperienceButton?.textContent?.trim() ?? "Noch keine";
+  const experienceKey = activeExperienceButton?.dataset.experience ?? "keine";
+  const canMentionCompetition = experienceKey === "regelmaessig" && ["Kinderturnen", "Jugendturnen"].includes(group);
 
-  .capacity-card {
-    position: relative;
-    right: auto;
-    bottom: auto;
-    width: min(520px, calc(100% - 32px));
-    margin: 0 auto 34px;
+  finderTitle.textContent = group;
+  finderCopy.textContent = finderCopyByGroup[group];
+  if (finderExtra) {
+    finderExtra.hidden = !canMentionCompetition;
+    finderExtra.textContent = canMentionCompetition
+      ? "Wettkampfturnen wird von unseren TrainerInnen empfohlen, wenn es zum Kind und zum Trainingsstand passt."
+      : "";
   }
+  finderMail.textContent =
+    group === "Erwachsene"
+      ? "Erwachsenentraining anfragen"
+      : "Diese Warteliste anfragen";
+  const isFinderWaitlistGroup = ["Kleinkinderturnstunde", "Kinderturnen", "Jugendturnen"].includes(group);
+  const subject = `${isFinderWaitlistGroup ? "Wartelisten-Anfrage" : "Anfrage"} ${group}`;
+  const bodyParts = [
+    "Liebes EWTV-Team,",
+    "",
+    "ich interessiere mich für ein passendes Turnangebot und möchte mich beziehungsweise mein Kind gerne auf die Warteliste setzen lassen.",
+    "",
+    "Aufgrund unserer Angaben wurde folgende Gruppe empfohlen:",
+    "",
+    `Empfohlene Gruppe: ${group}`,
+    `Gewünschter Trainingsschwerpunkt: ${activeGoal}`,
+    `Turnerfahrung: ${activeExperience}`,
+    "",
+    "Name:",
+    "Alter:",
+    "Telefonnummer:",
+    "",
+    "Vielen Dank! Wir freuen uns über eine Rückmeldung, sobald ein passender Platz frei wird.",
+    "Liebe Grüße",
+    "NAME"
+  ];
+  finderMail.href = `mailto:office@ewtv.at?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyParts.join("\r\n"))}`;
+};
 
-  .intro-grid,
-  .program-explorer,
-  .finder,
-  .apparatus-lab,
-  .trainer-grid,
-  .trainer-detail,
-  .trainer-profile,
-  .trainer-more,
-  .story,
-  .timeline,
-  .contact-card,
-  .footer-inner {
-    grid-template-columns: 1fr;
-  }
+ageGroupButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    answerQuizStep(ageGroupButtons, button);
+  });
+});
 
-  .program-tabs {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
+goalButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    answerQuizStep(goalButtons, button);
+  });
+});
 
-  .program-tabs button {
-    text-align: center;
-  }
+experienceButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    answerQuizStep(experienceButtons, button);
+  });
+});
 
-  .schedule-tools {
-    grid-template-columns: repeat(5, minmax(54px, 1fr));
-    gap: 8px;
-  }
+quizNextButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (button.disabled) return;
+    if (activeQuizStep >= quizSteps.length - 1) {
+      completeQuiz();
+      return;
+    }
+    setQuizStep(activeQuizStep + 1);
+  });
+});
 
-  .schedule-tools button {
-    min-height: 72px;
-    padding: 12px 8px;
-  }
+quizRestart?.addEventListener("click", resetQuiz);
 
-  .schedule-row {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
+updateFinder();
+setQuizStep(0);
 
-  .schedule-row.head {
-    display: none;
+const apparatusContent = {
+  boden: {
+    symbol: "B",
+    title: "Boden",
+    image: "assets/apparatus-boden.jpg?v=3",
+    alt: "Stilisierte Turnszene am Gerät Boden",
+    copy: "Rollen, Stützen, Körperspannung und sichere Landungen bilden die Basis für vieles, was später an Geräten gebraucht wird."
+  },
+  reck: {
+    symbol: "R",
+    title: "Reck",
+    image: "assets/apparatus-reck.jpg?v=3",
+    alt: "Stilisierte Turnszene am Reck",
+    copy: "Am Reck geht es um Griffkraft, Körperspannung und kontrolliertes Schwingen. Saubere Grundlagen machen hier den Unterschied."
+  },
+  barren: {
+    symbol: "Ba",
+    title: "Barren",
+    image: "assets/apparatus-barren.jpg?v=3",
+    alt: "Stilisierte Turnszene am Barren",
+    copy: "Stützen, Schwingen und Halten verbinden Kraft mit Technik. Der Barren zeigt schnell, wie wichtig stabile Grundlagen sind."
+  },
+  balken: {
+    symbol: "Bl",
+    title: "Balken",
+    image: "assets/apparatus-balken.jpg?v=3",
+    alt: "Stilisierte Turnszene am Balken",
+    copy: "Am Balken stehen Gleichgewicht, Körperspannung und konzentrierte Bewegungen im Mittelpunkt. Kleine Schritte werden hier sehr bewusst trainiert."
+  },
+  sprung: {
+    symbol: "S",
+    title: "Sprung",
+    image: "assets/apparatus-sprung.jpg?v=3",
+    alt: "Stilisierte Turnszene am Sprung",
+    copy: "Anlauf, Abdruck und Landung werden Schritt für Schritt aufgebaut. Sicherheit und Rhythmus stehen immer vor Tempo."
+  },
+  minitramp: {
+    symbol: "M",
+    title: "Minitramp",
+    image: "assets/apparatus-minitramp.jpg?v=3",
+    alt: "Stilisierte Turnszene am Minitramp",
+    copy: "Beim Minitramp zählen Spannung, Absprung und eine kontrollierte Landung. Es bringt Dynamik ins Training, bleibt aber klar angeleitet."
   }
+};
 
-  .story-stack span:nth-child(even) {
-    transform: none;
-  }
+const scrollToApparatus = () => {
+  const target = apparatusLab ?? apparatusDetail;
+  if (!target) return;
 
-  .apparatus-board {
-    min-height: 560px;
-  }
+  const headerOffset = 120;
+  const top = target.offsetTop - headerOffset;
+  window.scrollTo({ top: Math.max(top, 0), behavior: "auto" });
+};
 
-  .trainer-detail-photo {
-    min-height: 260px;
-  }
+apparatusButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const item = apparatusContent[button.dataset.apparatusKey];
+    if (!item || !apparatusTitle || !apparatusCopy || !motionSymbol) return;
 
-  .trainer-profile-main {
-    padding-top: 112px;
-  }
+    apparatusButtons.forEach((entry) => entry.classList.toggle("is-active", entry === button));
+    if (apparatusImage) {
+      apparatusImage.src = item.image;
+      apparatusImage.alt = item.alt;
+    }
+    motionSymbol.textContent = item.symbol;
+    apparatusTitle.textContent = item.title;
+    apparatusCopy.textContent = item.copy;
+    motionSymbol.style.animation = "none";
+    button.blur();
+    requestAnimationFrame(() => {
+      motionSymbol.style.animation = "";
+      window.setTimeout(scrollToApparatus, 40);
+    });
+  });
+});
 
-  .trainer-profile-photo {
-    min-height: 360px;
+const trainerContent = [
+  {
+    key: "christopher",
+    name: "Christopher",
+    label: "Kleinkinder, Kinder & Wettkampfturnen",
+    photo: "trainer-a",
+    text: "Christopher begleitet die Kinder mit klarer Struktur und viel Ruhe durch die Stunde. Wichtig ist ihm, dass sich jedes Kind sicher fühlt, mutiger wird und Freude an Bewegung entwickelt.",
+    focus: ["Klare Abläufe", "Sichere Hilfestellung", "Motivation"]
+  },
+  {
+    key: "julia",
+    name: "Julia",
+    label: "Kleinkinder & Kinder",
+    photo: "trainer-b",
+    text: "Julia achtet darauf, dass Kinder gut ankommen, Übungen verstehen und sich Schritt für Schritt etwas zutrauen. Ihre Stunden sind ruhig geführt, freundlich und verlässlich.",
+    focus: ["Geduld", "Grundlagen", "Ruhige Begleitung"]
+  },
+  {
+    key: "friedericke",
+    name: "Friedericke",
+    label: "Jugend & Wettkampf",
+    photo: "trainer-c",
+    text: "Friedericke arbeitet gerne an Technik, Körperspannung und sauberem Aufbau. Sie hilft den Jugendlichen, Übungen genauer zu verstehen und mit mehr Selbstvertrauen zu turnen.",
+    focus: ["Technik", "Körperspannung", "Präzision"]
+  },
+  {
+    key: "tobias",
+    name: "Tobias",
+    label: "Kleinkinder & Kinder",
+    photo: "trainer-d",
+    text: "Tobias bringt viel Energie in die Halle und behält trotzdem den Überblick. Er mag Stunden, in denen Kinder in Bewegung bleiben, lachen und nebenbei wichtige Grundlagen lernen.",
+    focus: ["Bewegungsfreude", "Übersicht", "Aktive Gruppen"]
+  },
+  {
+    key: "felix",
+    name: "Felix",
+    label: "Jugend & Wettkampf",
+    photo: "trainer-e",
+    text: "Felix legt Wert auf Kraft, saubere Progressionen und sichere Landungen. Er baut Übungen so auf, dass die Jugendlichen merken, warum jeder Zwischenschritt wichtig ist.",
+    focus: ["Kraftaufbau", "Progression", "Sicherheit"]
+  },
+  {
+    key: "lisa",
+    name: "Lisa",
+    label: "Kleinkinder & Kinder",
+    photo: "trainer-f",
+    text: "Lisa hat einen spielerischen Zugang und viel Geduld. Sie schafft eine angenehme Stimmung, in der Kinder Neues ausprobieren können, ohne sich gedrängt zu fühlen.",
+    focus: ["Spielerisch", "Geduld", "Vertrauen"]
+  },
+  {
+    key: "christina",
+    name: "Christina",
+    label: "Damengymnastik",
+    photo: "trainer-g",
+    text: "Christina gestaltet die Damengymnastik klar, wohltuend und aktiv. Im Mittelpunkt stehen Beweglichkeit, Stabilität und ein Training, das gut in den Alltag passt.",
+    focus: ["Beweglichkeit", "Stabilität", "Wohlbefinden"]
+  },
+  {
+    key: "patrick",
+    name: "Patrick",
+    label: "Kinder & Jugend",
+    photo: "trainer-h",
+    text: "Patrick begleitet Kinder und Jugendliche mit ruhigem Aufbau, klaren Erklärungen und sicherer Hilfestellung. Ihm ist wichtig, dass Übungen verständlich bleiben und Fortschritte Schritt für Schritt entstehen.",
+    focus: ["Hilfestellung", "Technikaufbau", "Sicherheit"]
   }
-}
+];
 
-@media (max-width: 560px) {
-  .site-header {
-    top: 10px;
-    width: calc(100% - 20px);
-  }
+const getTrainerUrl = (key) => `trainer.html?person=${encodeURIComponent(key)}`;
 
-  .brand {
-    min-width: 0;
+trainerCards.forEach((card) => {
+  if (card instanceof HTMLAnchorElement) {
+    card.setAttribute("aria-label", `${card.querySelector("h3")?.textContent ?? "Trainerprofil"} ansehen`);
   }
+});
 
-  .brand-mark {
-    width: 78px;
-    height: 38px;
-    padding: 5px 7px;
-  }
+const renderTrainerProfile = () => {
+  if (!trainerProfile || !profilePhoto || !profileLabel || !profileName || !profileText || !profileFocus || !profileSwitcher) return;
 
-  .brand strong {
-    max-width: 150px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  const requestedKey = new URLSearchParams(window.location.search).get("person") ?? "christopher";
+  const activeIndex = Math.max(
+    0,
+    trainerContent.findIndex((item) => item.key === requestedKey)
+  );
+  const item = trainerContent[activeIndex];
+  document.title = `${item.name} | Trainerteam | Erster Wiener Turnverein`;
+  profilePhoto.className = `trainer-profile-photo ${item.photo}`;
+  profilePhoto.dataset.initial = item.name.slice(0, 1);
+  profileLabel.textContent = item.label;
+  profileName.textContent = item.name;
+  profileText.textContent = item.text;
 
-  .hero {
-    min-height: auto;
-  }
+  profileFocus.replaceChildren(
+    ...item.focus.map((focus) => {
+      const tag = document.createElement("span");
+      tag.textContent = focus;
+      return tag;
+    })
+  );
 
-  .hero h1 {
-    font-size: 3.25rem;
-  }
+  profileSwitcher.replaceChildren(
+    ...trainerContent.map((entry) => {
+      const link = document.createElement("a");
+      link.href = getTrainerUrl(entry.key);
+      link.textContent = entry.name;
+      link.classList.toggle("is-active", entry.key === item.key);
+      if (entry.key === item.key) {
+        link.setAttribute("aria-current", "page");
+      }
+      return link;
+    })
+  );
+};
 
-  .button,
-  .mail-button {
-    width: 100%;
-  }
+renderTrainerProfile();
 
-  .intro-band {
-    margin-top: 0;
+const timelineContent = {
+  tradition: {
+    year: "Tradition",
+    title: "Ein Verein mit Haltung",
+    copy: "Turnen bedeutet Gemeinschaft, Verlässlichkeit und die Freude daran, sich Schritt für Schritt weiterzuentwickeln."
+  },
+  training: {
+    year: "Training",
+    title: "Struktur für jede Stunde",
+    copy: "Gute Turnstunden brauchen klare Abläufe: ankommen, aufwärmen, üben, sichern, abschließen. Genau das macht Fortschritt sichtbar."
+  },
+  heute: {
+    year: "Heute",
+    title: "Wartelisten mit Überblick",
+    copy: "Weil die Kinder- und Jugendgruppen voll sind, hilft eine klare Vormerkung. So bleiben Gruppen stabil und neue Plätze können passend vergeben werden."
   }
+};
 
-  .section,
-  .section.overlap {
-    padding-top: 82px;
-  }
+timelineButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const item = timelineContent[button.dataset.year];
+    if (!item || !timelineYear || !timelineTitle || !timelineCopy) return;
 
-  .story-content,
-  .contact-card {
-    padding: 26px;
-  }
+    timelineButtons.forEach((entry) => entry.classList.toggle("is-active", entry === button));
+    timelineYear.textContent = item.year;
+    timelineTitle.textContent = item.title;
+    timelineCopy.textContent = item.copy;
+  });
+});
 
-  .program-tabs {
-    grid-template-columns: 1fr;
-  }
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },
+  { threshold: 0.16 }
+);
 
-  .program-stage {
-    min-height: 520px;
-    padding: 22px;
-  }
+const revealVisibleItems = () => {
+  revealItems.forEach((item) => {
+    const rect = item.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.92) {
+      item.classList.add("is-visible");
+      revealObserver.unobserve(item);
+    }
+  });
+};
 
-  .program-panel {
-    grid-template-columns: 1fr;
-  }
+revealItems.forEach((item, index) => {
+  item.style.transitionDelay = `${Math.min(index % 4, 3) * 70}ms`;
+  revealObserver.observe(item);
+});
 
-  .quiz-progress {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    width: 100%;
-    min-height: 44px;
-    padding: 5px;
-  }
-
-  .quiz-progress span {
-    min-height: 32px;
-    padding: 0 6px;
-    font-size: 0.66rem;
-    gap: 5px;
-  }
-
-  .quiz-progress b {
-    width: 22px;
-    height: 22px;
-    font-size: 0.7rem;
-  }
-
-  .quiz-progress small {
-    max-width: 54px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .finder-result {
-    min-height: 320px;
-    padding: 26px;
-  }
-
-  .finder-result .button {
-    width: 100%;
-  }
-
-  .apparatus-board {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(6, minmax(96px, 1fr));
-    min-height: 640px;
-  }
-
-  .apparatus-detail,
-  .trainer-detail,
-  .trainer-profile-card,
-  .trainer-more,
-  .timeline-panel {
-    padding: 26px;
-  }
-
-  .trainer-detail-actions button,
-  .trainer-switcher button {
-    flex: 1 1 auto;
-  }
-
-  .trainer-profile-photo {
-    min-height: 280px;
-  }
-
-  .trainer-profile-card h1 {
-    font-size: 3rem;
-  }
-}
+requestAnimationFrame(revealVisibleItems);
+window.addEventListener("scroll", revealVisibleItems, { passive: true });
